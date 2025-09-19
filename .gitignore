@@ -7,8 +7,6 @@
 .buildlog/
 .history
 
-
-
 # Flutter repo-specific
 /bin/cache/
 /bin/internal/bootstrap.bat
@@ -86,6 +84,7 @@ unlinked_spec.ds
 **/ios/Flutter/flutter_export_environment.sh
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
+**/ios/**/*.xcworkspace/
 
 # macOS
 **/Flutter/ephemeral/
@@ -93,6 +92,9 @@ unlinked_spec.ds
 **/macos/Flutter/GeneratedPluginRegistrant.swift
 **/macos/Flutter/ephemeral
 **/xcuserdata/
+.DS_Store
+.AppleDouble
+.LSOverride
 
 # Windows
 **/windows/flutter/generated_plugin_registrant.cc
@@ -110,6 +112,21 @@ coverage/
 # Symbols
 app.*.symbols
 
+# Firebase & sensitive keys
+google-services.json
+GoogleService-Info.plist
+.env
+
+# VS Code settings (optional)
+.vscode/
+
+# Lock files (optional, useful if adding a web project)
+yarn.lock
+
+# Default ignored files
+/shelf/
+.idea/workspace.xml
+
 # Exceptions to above rules.
 !**/ios/**/default.mode1v3
 !**/ios/**/default.mode2v3
@@ -117,3 +134,8 @@ app.*.symbols
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
+.idea/workspace.xml
+
+.idea/
+
+devtools_options.yaml
