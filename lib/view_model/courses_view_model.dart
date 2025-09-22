@@ -9,7 +9,8 @@ class CoursesViewModel extends ChangeNotifier {
 
   CoursesViewModel(this._players);
 
-  final int totalCourses = 18;
+  //final int totalCourses = 18;
+  final int totalCourses = 5;
   final List<Course> _finishedCourses = [];
   List<Course> get finishedCourses => _finishedCourses.toList();
   int get finishedCourseCount => _finishedCourses.length;

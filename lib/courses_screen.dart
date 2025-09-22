@@ -58,7 +58,7 @@ class CoursesScreen extends StatelessWidget {
                     SnackBar(
                       behavior: SnackBarBehavior.floating,
                       duration: Durations.long4,
-                      content: Text('Finish this course!'),
+                      content: Text('Finish this course first!'),
                     ),
                   );
                   backwardPage();

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
 import '../model/course.dart';
@@ -8,6 +9,11 @@ class CourseViewModel extends ChangeNotifier {
 
   CourseViewModel(this.course) {
     if(course.finished) { _currentPlayerIndex = course.orderedPlayers.length - 1; }
+  }
+
+  List<PlayerScore> get previousPlayerScores {
+    if(course.finished) return course.playerScores;
+    return course.playerScores.slice(0, _currentPlayerIndex);
   }
 
   int _currentPlayerIndex = 0;

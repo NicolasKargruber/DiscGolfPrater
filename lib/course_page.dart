@@ -65,6 +65,10 @@ class CoursePage extends StatelessWidget {
                   ),
                 ),
 
+                Column(
+                  children: vm.previousPlayerScores.map((score) => Text('${score.player.name}: ${score.score}', style: const TextStyle(fontSize: AppValues.fs20, color: Colors.white))).toList(),
+                ),
+
                 // Middle: Player's turn + Frisbee counter
                 vm.course.finished ? buildCourseFinished() : buildPlayersTurn(context),
 
