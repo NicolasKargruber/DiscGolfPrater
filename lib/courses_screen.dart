@@ -2,7 +2,8 @@ import 'package:disc_golf_prater/course_page.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import 'player.dart';
+import 'courses_view_model.dart';
+import 'model/player.dart';
 import 'result_screen.dart';
 import 'utilities/app_values.dart';
 
@@ -16,11 +17,16 @@ class CoursesScreen extends StatefulWidget {
 }
 
 class _CoursesScreenState extends State<CoursesScreen> {
+  late final CourseViewModel vm;
   final PageController _pageController = PageController(
       keepPage: true
   );
-  static const int totalCourses = 18;
-  int currentCourse = 0;
+
+  @override
+  void initState() {
+    vm = CourseViewModel(widget.players);
+    super.initState();
+  }
 
   void backwardPage() {
     if (_pageController.hasClients) {
@@ -33,7 +39,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
 
   void forwardPage() {
     if (_pageController.hasClients) {
-      if (_pageController.page == totalCourses - 1) {
+      if (_pageController.page == vm.totalCourses - 1) {
         if (!mounted) return;
         Navigator.of(context).push(
           MaterialPageRoute(
@@ -48,14 +54,10 @@ class _CoursesScreenState extends State<CoursesScreen> {
     }
   }
 
-  void onCourseFinished(int courseNumber) {
-    if (currentCourse < courseNumber) currentCourse++;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("$totalCourses Courses")),
+      appBar: AppBar(title: Text("${vm.totalCourses} Courses")),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -63,7 +65,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
             child: PageView.builder(
               controller: _pageController,
               onPageChanged: (int page) {
-                if((_pageController.page?.round() ?? 0) > currentCourse) {
+                if((_pageController.page?.round() ?? 0) > vm.currentCourseIndex + 1) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       behavior: SnackBarBehavior.floating,
@@ -74,14 +76,15 @@ class _CoursesScreenState extends State<CoursesScreen> {
                   backwardPage();
                 }
             },
-              itemCount: totalCourses,
+              itemCount: vm.totalCourses,
               itemBuilder: (context, index) {
                 return CoursePage(
-                  courseNumber: index + 1,
+                  courseIndex: index,
                   players: widget.players,
                   backwardPage: backwardPage,
                   forwardPage: forwardPage,
-                  onCourseFinished: onCourseFinished,
+                  onTurnEnded: vm.onTurnEnded,
+                  onCourseFinished: vm.onCourseFinished,
                 );
               },
             ),
@@ -90,7 +93,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
             padding: const EdgeInsets.all(AppValues.p16),
             child: SmoothPageIndicator(
               controller: _pageController,
-              count: totalCourses,
+              count: vm.totalCourses,
               effect: const ScrollingDotsEffect(
                 activeDotColor: Colors.white,
                 dotColor: Colors.white60,

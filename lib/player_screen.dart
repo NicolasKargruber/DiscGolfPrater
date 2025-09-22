@@ -1,10 +1,10 @@
 import 'dart:math';
 
-import 'package:disc_golf_prater/utilities/app_values.dart';
 import 'package:flutter/material.dart';
 
 import 'courses_screen.dart';
-import 'player.dart';
+import 'model/player.dart';
+import 'utilities/app_values.dart';
 
 class PlayerScreen extends StatefulWidget {
   const PlayerScreen({super.key});
@@ -20,9 +20,19 @@ class _PlayerScreenState extends State<PlayerScreen> {
 
   void _addPlayer() {
     setState(() {
+      String name = "Player69";
+      int tries = 2;
+      do {
+        if (tries == 0) {
+          name = "Player $_playerCount";
+          break;
+        }
+        name = Player.names[_random.nextInt(Player.names.length)];
+        tries--;
+      } while (_players.any((player) => player.name == name));
       _players.add(
         Player(
-          'Player $_playerCount',
+          name,
           Color.fromARGB(
             255,
             _random.nextInt(256),
@@ -35,24 +45,6 @@ class _PlayerScreenState extends State<PlayerScreen> {
   }
 
   void _startGame() async {
-    // Countdown 3,2,1
-    if (false) for (int i = 3; i > 0; i--) {
-      await showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (_) => AlertDialog(
-          alignment: Alignment.center,
-          content: Text(
-            '$i',
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 64, fontWeight: FontWeight.bold),
-          ),
-        ),
-      );
-      //await Future.delayed(const Duration(milliseconds: 500));
-      if (mounted) Navigator.of(context).pop();
-    }
-
     // Shuffle players
     final shuffled = List<Player>.from(_players)..shuffle();
 
