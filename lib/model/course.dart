@@ -1,12 +1,32 @@
 import 'player.dart';
 
+class PlayerScore {
+  int score;
+  final Player player;
+
+  PlayerScore({required this.score, required this.player});
+}
+
 class Course {
-  final int number;
+  final int index;
+  String get label => "Course ${index + 1}";
 
-  Course(this.number);
+  CourseStatus _status = CourseStatus.ongoing;
+  CourseStatus get status => _status;
 
-  final List<({int score, Player player})> _scores = [];
-  List<({int score, Player player})> get scores => _scores.toList();
+  final List<Player> orderedPlayers;
 
-  addCourse(int score, Player player) => _scores.add((score: score, player: player));
+  late final List<PlayerScore> _playerScores;
+  List<PlayerScore> get playerScores => _playerScores.toList();
+
+  Course(this.index, {required this.orderedPlayers}) {
+    _playerScores = orderedPlayers.map((player) => PlayerScore(score: 0, player: player)).toList();
+  }
+
+  endCourse() => _status = CourseStatus.finished;
+  get finished => _status == CourseStatus.finished;
+}
+
+enum CourseStatus {
+  ongoing, finished
 }

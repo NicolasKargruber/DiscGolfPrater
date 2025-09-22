@@ -1,32 +1,18 @@
 import 'package:disc_golf_prater/course_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import 'courses_view_model.dart';
-import 'model/player.dart';
+import 'model/course.dart';
+import 'view_model/course_view_model.dart';
 import 'result_screen.dart';
 import 'utilities/app_values.dart';
+import 'view_model/courses_view_model.dart';
 
-class CoursesScreen extends StatefulWidget {
-  final List<Player> players;
+class CoursesScreen extends StatelessWidget {
+  CoursesScreen({super.key});
 
-  const CoursesScreen({super.key, required this.players});
-
-  @override
-  State<CoursesScreen> createState() => _CoursesScreenState();
-}
-
-class _CoursesScreenState extends State<CoursesScreen> {
-  late final CourseViewModel vm;
-  final PageController _pageController = PageController(
-      keepPage: true
-  );
-
-  @override
-  void initState() {
-    vm = CourseViewModel(widget.players);
-    super.initState();
-  }
+  final PageController _pageController = PageController(keepPage: true);
 
   void backwardPage() {
     if (_pageController.hasClients) {
@@ -37,10 +23,11 @@ class _CoursesScreenState extends State<CoursesScreen> {
     }
   }
 
-  void forwardPage() {
+  void forwardPage(BuildContext context) {
+    final vm = context.read<CoursesViewModel>();
     if (_pageController.hasClients) {
       if (_pageController.page == vm.totalCourses - 1) {
-        if (!mounted) return;
+        if (!context.mounted) return;
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => ResultScreen(),
@@ -56,6 +43,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final vm = context.read<CoursesViewModel>();
     return Scaffold(
       appBar: AppBar(title: Text("${vm.totalCourses} Courses")),
       body: Column(
@@ -65,7 +53,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
             child: PageView.builder(
               controller: _pageController,
               onPageChanged: (int page) {
-                if((_pageController.page?.round() ?? 0) > vm.currentCourseIndex + 1) {
+                if((_pageController.page?.round() ?? 0) > vm.finishedCourseCount) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       behavior: SnackBarBehavior.floating,
@@ -78,13 +66,21 @@ class _CoursesScreenState extends State<CoursesScreen> {
             },
               itemCount: vm.totalCourses,
               itemBuilder: (context, index) {
-                return CoursePage(
-                  courseIndex: index,
-                  players: widget.players,
-                  backwardPage: backwardPage,
-                  forwardPage: forwardPage,
-                  onTurnEnded: vm.onTurnEnded,
-                  onCourseFinished: vm.onCourseFinished,
+                return ChangeNotifierProvider(
+                  create: (_) {
+                    final Course course;
+                    if(index < vm.finishedCourseCount) {
+                      course = vm.finishedCourses[index];
+                    } else {
+                      course = Course(index, orderedPlayers: vm.players);
+                    }
+                    return CourseViewModel(course);
+                  },
+                  child: CoursePage(
+                    backwardPage: backwardPage,
+                    forwardPage: () => forwardPage(context),
+                    onCourseFinished: vm.onCourseFinished,
+                  ),
                 );
               },
             ),

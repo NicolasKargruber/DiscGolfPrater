@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'courses_screen.dart';
+import 'view_model/courses_view_model.dart';
 import 'model/player.dart';
 import 'utilities/app_values.dart';
 
@@ -51,7 +53,10 @@ class _PlayerScreenState extends State<PlayerScreen> {
     if (!mounted) return;
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => CoursesScreen(players: shuffled),
+        builder: (_) => ChangeNotifierProvider(
+            create: (_) => CoursesViewModel(shuffled),
+            child: CoursesScreen(),
+        ),
       ),
     );
   }
