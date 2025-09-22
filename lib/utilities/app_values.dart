@@ -80,4 +80,7 @@ class AppValues {
   static const fs32 = 32.0;
   static const fs36 = 36.0;
   static const fs40 = 40.0;
+  static const fs44 = 44.0;
+  static const fs48 = 48.0;
+  static const fs52 = 52.0;
 }
