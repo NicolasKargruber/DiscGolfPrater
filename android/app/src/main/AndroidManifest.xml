@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="disc_golf_prater"
+        android:label="Disc Golf Prater"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
