@@ -15,6 +15,16 @@ class CoursesScreen extends StatelessWidget {
 
   final PageController _pageController = PageController(keepPage: true);
 
+  void _showSnackBar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        duration: Durations.long4,
+        content: Text('Finish this course first!'),
+      ),
+    );
+  }
+
   void backwardPage() {
     if (_pageController.hasClients) {
       _pageController.previousPage(
@@ -27,7 +37,7 @@ class CoursesScreen extends StatelessWidget {
   void forwardPage(BuildContext context) {
     final vm = context.read<CoursesViewModel>();
     if (_pageController.hasClients) {
-      if (_pageController.page == vm.totalCourses - 1) {
+      if (_pageController.page == vm.totalCourses - 1 && vm.hasFinishedAllCourses) {
         if (!context.mounted) return;
         Navigator.of(context).push(
           MaterialPageRoute(
@@ -38,6 +48,7 @@ class CoursesScreen extends StatelessWidget {
           ),
         );
       }
+      else { _showSnackBar(context); }
       _pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
@@ -58,13 +69,7 @@ class CoursesScreen extends StatelessWidget {
               controller: _pageController,
               onPageChanged: (int page) {
                 if((_pageController.page?.round() ?? 0) > vm.finishedCourseCount) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      behavior: SnackBarBehavior.floating,
-                      duration: Durations.long4,
-                      content: Text('Finish this course first!'),
-                    ),
-                  );
+                  _showSnackBar(context);
                   backwardPage();
                 }
             },
@@ -76,7 +81,7 @@ class CoursesScreen extends StatelessWidget {
                     if(index < vm.finishedCourseCount) {
                       course = vm.finishedCourses[index];
                     } else {
-                      course = Course(index, orderedPlayers: vm.players);
+                      course = Course(index, orderedPlayers: vm.nextPlayerOrder);
                     }
                     return CourseViewModel(course);
                   },

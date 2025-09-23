@@ -47,14 +47,11 @@ class _PlayerScreenState extends State<PlayerScreen> {
   }
 
   void _startGame() async {
-    // Shuffle players
-    final shuffled = List<Player>.from(_players)..shuffle();
-
     if (!mounted) return;
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => ChangeNotifierProvider(
-            create: (_) => CoursesViewModel(shuffled),
+            create: (_) => CoursesViewModel(_players),
             child: CoursesScreen(),
         ),
       ),

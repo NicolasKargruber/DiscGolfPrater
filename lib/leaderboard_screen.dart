@@ -46,7 +46,7 @@ class LeaderboardScreen extends StatelessWidget {
                         return Text(
                           "${i + 1}. ${entry.key.name}  (${entry.value})",
                           style: TextStyle(
-                            fontSize: 20.0 + 12 / (i + 1),
+                            fontSize: 16.0 + 12 / (i + 1),
                             fontWeight: i == 0 ? FontWeight.bold : FontWeight.normal,
                             color: entry.key.color,
                           ),
@@ -119,7 +119,15 @@ class _PlayerScoresTable extends StatelessWidget {
               final score = c.playerScores.firstWhere(
                     (s) => s.player == player,
               ).score;
-              return DataCell(Text(score.toString()));
+              return DataCell(
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: AppValues.p2, horizontal: AppValues.p16),
+                    decoration: BoxDecoration(
+                      color: player.color,
+                      borderRadius: BorderRadius.circular(AppValues.r8),
+                    ), child: Text(score.toString(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+                  ),
+              );
             }),
             DataCell(Text(total.toString())),
           ],

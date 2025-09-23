@@ -61,7 +61,7 @@ class Player {
     "BananaShot",
     "DisQ",
     "Kitty",
-    "404Skillz",
+    "No-Skill",
     "Momo",
     "Ninja",
     "Oreo",
