@@ -5,9 +5,10 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'model/course.dart';
 import 'view_model/course_view_model.dart';
-import 'result_screen.dart';
+import 'leaderboard_screen.dart';
 import 'utilities/app_values.dart';
 import 'view_model/courses_view_model.dart';
+import 'view_model/leaderboard_view_model.dart';
 
 class CoursesScreen extends StatelessWidget {
   CoursesScreen({super.key});
@@ -30,7 +31,10 @@ class CoursesScreen extends StatelessWidget {
         if (!context.mounted) return;
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => ResultScreen(),
+            builder: (_) => ChangeNotifierProvider(
+                create: (_) => LeaderboardViewModel(vm.finishedCourses),
+                child: LeaderboardScreen(),
+            ),
           ),
         );
       }
