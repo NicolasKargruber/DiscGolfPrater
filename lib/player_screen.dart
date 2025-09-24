@@ -70,6 +70,41 @@ class _PlayerScreenState extends State<PlayerScreen> {
             itemBuilder: (context, index) {
               final player = _players[index];
               return ListTile(
+                  onTap: () async {
+                    final textController = TextEditingController();
+                    final customName = await showDialog<String>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text("Edit Player"),
+                        content: TextField(
+                          controller: textController,
+                          decoration: const InputDecoration(
+                            hintText: "Custom name",
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => setState(() {
+                                Navigator.pop(context);
+                              _players.remove(player);
+                            }),
+                            child: const Text("Remove"),
+                          ),
+                          TextButton(
+                            onPressed: () =>
+                                Navigator.pop(context, textController.text),
+                            child: const Text("OK"),
+                          ),
+                        ],
+                      ),
+                    );
+                    if (customName != null && customName.isNotEmpty) {
+                      setState(() {
+                        _players[index] =
+                            Player(customName, _players[index].color);
+                      });
+                    }
+                  },
                 leading: CircleAvatar(backgroundColor: player.color),
                 title: Text(player.name),
               );

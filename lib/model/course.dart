@@ -25,6 +25,13 @@ class Course {
 
   endCourse() => _status = CourseStatus.finished;
   get finished => _status == CourseStatus.finished;
+
+  resetCourse() {
+    _status = CourseStatus.ongoing;
+    for (var ps in _playerScores) {
+      ps.score = 0;
+    }
+  }
 }
 
 enum CourseStatus {

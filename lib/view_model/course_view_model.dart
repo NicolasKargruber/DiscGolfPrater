@@ -6,13 +6,14 @@ import '../model/player.dart';
 
 class CourseViewModel extends ChangeNotifier {
   final Course course;
+  bool get finished => course.finished;
 
   CourseViewModel(this.course) {
-    if(course.finished) { _currentPlayerIndex = course.orderedPlayers.length - 1; }
+    if(finished) { _currentPlayerIndex = course.orderedPlayers.length - 1; }
   }
 
   List<PlayerScore> get previousPlayerScores {
-    if(course.finished) return course.playerScores;
+    if(finished) return course.playerScores;
     return course.playerScores.slice(0, _currentPlayerIndex);
   }
 
@@ -45,6 +46,14 @@ class CourseViewModel extends ChangeNotifier {
 
   void lowerCurrentScore() {
     _currentScore--;
+    notifyListeners();
+  }
+
+  void resetCourse() {
+    if(!finished) return;
+    _currentPlayerIndex = 0;
+    _currentScore = 0;
+    course.resetCourse();
     notifyListeners();
   }
 }
