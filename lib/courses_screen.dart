@@ -48,7 +48,6 @@ class CoursesScreen extends StatelessWidget {
           ),
         );
       }
-      else { _showSnackBar(context); }
       _pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
