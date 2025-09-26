@@ -1,16 +1,28 @@
-# disc_golf_prater
+# 🥏 Disc Golf Prater
 
-A new Flutter project.
+A simple and fun Flutter app to keep track of disc golf games with friends.  
+Players are assigned random colors, you can customize their names, and the app manages player order, courses, and scoring automatically.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## ✨ Features
 
-A few resources to get you started if this is your first Flutter project:
+- ➕ **Add Players**  
+  Quickly add players with random colors.  
+  Tap a player to rename them from a name sheet or enter a custom name.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- 🎲 **Random Player Order**  
+  The app decides who goes first based on the last course results (and resolves ties by total score).
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- ⛳ **Courses**  
+  18 courses by default. Each course is a separate page with its own state.
+
+- 🥏 **Per-Player Scoring**  
+  On a course page, track throws by tapping the frisbee icon (+ / - to adjust).  
+  Press **Next** to move on.
+
+- 📊 **Leaderboard**  
+  Shows ranking (1, 2, 3, …) on the top right and a table of all courses with each player’s scores.
+
+- 🏆 **Final Results**  
+  After 18 courses, see the winner with a big trophy 🏆 and the full score breakdown.
